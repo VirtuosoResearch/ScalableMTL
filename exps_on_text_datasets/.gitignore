@@ -1,0 +1,12 @@
+cache/
+data/
+wandb/
+outputs/
+saved/
+__pycache__/
+figures/
+hessian_figures/
+test/
+sampled_tasks/
+results/
+clusters/

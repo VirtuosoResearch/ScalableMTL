@@ -1,0 +1,36 @@
+CUDA_VISIBLE_DEVICES=1 python train_multi_instruction.py \
+    --do_train \
+    --do_eval \
+    --predict_with_generate \
+    --model_name_or_path t5-base \
+    --max_source_length 512 \
+    --max_target_length 128 \
+    --pad_to_max_length True \
+    --generation_max_length 128 \
+    --data_dir data/splits/default \
+    --task_dir data/tasks \
+    --overwrite_output_dir \
+    --cache_dir ./cache/ \
+    --overwrite_cache \
+    --per_device_train_batch_size 8 \
+    --per_device_eval_batch_size 8 \
+    --gradient_accumulation_steps 1 \
+    --learning_rate 5e-05 \
+    --lr_scheduler_type constant \
+    --max_steps 5000 \
+    --warmup_steps 0 \
+    --logging_strategy steps \
+    --logging_steps 500 \
+    --evaluation_strategy steps \
+    --eval_steps 500 \
+    --save_strategy steps \
+    --save_steps 1000 \
+    --metric_for_best_model eval_exact_match\
+    --greater_is_better True \
+    --task_name rte \
+    --template_idx 0 1 2 3 4 5 6 7 8 9 \
+    --output_dir saved/ \
+    --load_best_model_at_end \
+    --disable_tqdm True \
+    --save_name rte_mtl \
+    --train_lora True --lora_rank 4 --lora_alpha 32 --runs 10

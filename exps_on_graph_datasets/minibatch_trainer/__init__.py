@@ -1,0 +1,5 @@
+from minibatch_trainer.minibatch_trainer import Trainer
+from minibatch_trainer.multitask_trainer import MultitaskTrainer
+from minibatch_trainer.regression_trainer import RegressionTrainer
+from minibatch_trainer.tag_trainer import TAGTrainer
+from minibatch_trainer.multitask_trainer_pooling import MultitaskTrainerPooling
