@@ -1,26 +1,17 @@
 ### Overview
 
-This code implements the Grad-TAE algorithm, a gradient-based method for task affinity estimation. The experiments involve multi-label classification on graphs using community detection labels and fine-tuning language models with multiple instructions.
-
-### Requirements
-
-We list the package requirements under each folder. Install related packages based on the following: 
-
-```
-pip install -r requirements.txt
-```
-
-### Data Preparation
-
-**Community detection.** We provide the datasets for conducting community detection named `data.zip` under the `./data/` folder used. Unzip the file under the folder, then one can directly load them in the code.
-
-**Language model fine-tuning.** The code will automatically download the datasets. Please specify the name of the dataset while using it.  
+This code implements the Grad-TAE algorithm, a gradient-based method for task affinity estimation. The experiments involve multi-label classification on graphs using community detection labels, fine-tuning language models with multiple instructions, and image classification data sets of various domains. 
 
 ### Usage
 
 Our algorithm contains four steps:
 
-1. **Training meta initializations**: This trains a multitask learning model on the combination of all tasks 
+- Train meta initializations
+- Compute the projected gradients of every training example on the meta initializations
+- Solve linear regression on gradients to estimate the output of model fine-tuned on a subset of tasks. 
+- Compute and cluster task affinity scores to generate task groups
+
+1. **Train meta initializations**: This trains a multitask learning model on the combination of all tasks 
 
 For graph datasets, use `train_node_pred_multitask.py` to train the model. Modify the `--dataset` to specify the dataset. This script will save the model checkpoints under a `./saved/` folder. Please create one before usage. 
 
@@ -38,7 +29,9 @@ For fine-tuning language models,  use `train_multi_instruction.py` to fine-tune 
 
 See `./exps_on_text_datasets/scripts/train_multi_instructions.sh` for a bash script example.
 
-2. **Compute the projected gradients** on each training data sample of all tasks. 
+For image classification tasks, see `./exps_on_image_datasets/scripts/train_multitask.sh` for a bash script example. 
+
+2. **Compute the projected gradients** of every training example on the meta initializations. 
 
 For graph datasets, use `fast_estimate_collect_gradients.py`. Specify `--project_dim` as the number of projections. This file will save the projection matrix and all projected gradients under a `./gradients/` folder. Please create the folder before usage. 
 
@@ -53,7 +46,9 @@ For fine-tuning language models, use `fast_estimate_collect_gradients.py`.
 
 - Use `--load_model_dir` to specify a saved checkpoint directory as the base model. 
 
-The rest of parameters would be the same as above. See `exps_on_text_datasets/scripts/collect_gradients.sh` for a bash script example. 
+The rest of the parameters would be the same as above. See `exps_on_text_datasets/scripts/collect_gradients.sh` for a bash script example. 
+
+For image classification tasks, see `./exps_on_image_datasets/scripts/compute_gradients.sh` for a bash script example. 
 
 3. **Solve linear regression on gradients** to estimate the output of model fine-tuned on a subset of tasks. 
 
@@ -71,6 +66,24 @@ For fine-tuning language models, use `fast_estimate_linear_model.py`.
 
 See `exps_on_text_datasets/scripts/solve_linear_regression.sh` for a bash script example. 
 
-4. **Clustering tasks to generate task groups** and train one model on each subset of tasks. 
+For image classification tasks, see `./exps_on_image_datasets/scripts/compute_logistic_regression.sh` for a bash script example. 
 
-- We provide an implementation of our SDP-based clustering algorithm in `./exps_on_graph_datasets/run_clustering.py`. One can load a computed task affinity score matrix and apply the clustering on top of the matrix. See the file for details.
+4. **Compute and cluster task affinity scores** and train one model on each subset of tasks. 
+
+We provide an implementation of our SDP-based clustering algorithm in `./exps_on_graph_datasets/run_clustering.py`. One can load a computed task affinity score matrix and apply the clustering on top of the matrix. See the file for details.
+
+### Requirements
+
+We list the package requirements under each folder. Install related packages within each corresponding folder based on the following: 
+
+```
+pip install -r requirements.txt
+```
+
+### Data Preparation
+
+**Community detection.** We provide the datasets for conducting community detection named `data.zip` under the `./data/` folder used. Unzip the file under the folder, then one can directly load them in the code.
+
+**Language model fine-tuning.** The code will automatically download the datasets. Please specify the name of the dataset while using it.  
+
+**Image classification.** We provide image classification data sets sampled from DomainNet named `domain_net.zip`. Download the zip file from this [link](https://drive.google.com/file/d/1OmeNf_sWHLUQhSIA2ICvm4jj4xyadG16/view?usp=sharing). Unzip the file under the `./data/` folder, then one can directly load them in the code.
