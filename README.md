@@ -87,3 +87,16 @@ pip install -r requirements.txt
 **Language model fine-tuning.** The code will automatically download the datasets. Please specify the name of the dataset while using it.  
 
 **Image classification.** We provide image classification data sets sampled from DomainNet named `domain_net.zip`. Download the zip file from this [link](https://drive.google.com/file/d/1OmeNf_sWHLUQhSIA2ICvm4jj4xyadG16/view?usp=sharing). Unzip the file under the `./data/` folder, then one can directly load them in the code.
+
+### Citation
+
+If you find this repository useful or happen to use it in a research paper, please cite our work using the following bib information.
+
+```
+@article{li2024scalable,
+  title={Scalable Multitask Learning Using Gradient-based Estimation of Task Affinity},
+  author={Li, Dongyue and Sharma, Aneesh and Zhang, Hongyang R},
+  journal={SIGKDD Conference on Knowledge Discovery and Data Mining},
+  year={2024}
+}
+```
